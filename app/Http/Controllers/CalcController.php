@@ -10,7 +10,6 @@ class CalcController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @return void
      */
     public function __construct()
     {
@@ -35,8 +34,6 @@ class CalcController extends Controller
 
         $formula = new Calc($num1, $num2);
 
-        $result = $formula->calculate($sign);
-
-        return view('calc',['result' => $result]);
+        return view('calc',['result' => $formula->calculate($sign)]);
     }
 }

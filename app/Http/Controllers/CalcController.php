@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Services\Calc;
 
 class CalcController extends Controller
 {
@@ -28,11 +29,14 @@ class CalcController extends Controller
 
     public function store(Request $request){
 
-        $x = $request->x;
-        $y = $request->y;
+        $num1 = $request->num1;
+        $num2 = $request->num2;
+        $sign = $request->sign;
 
-        $z=$x*$y;
+        $formula = new Calc($num1, $num2);
 
-        return view('calc',['result' => $z]);
+        $result = $formula->calculate($sign);
+
+        return view('calc',['result' => $result]);
     }
 }

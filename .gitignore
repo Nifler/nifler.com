@@ -8,3 +8,5 @@ Homestead.json
 Homestead.yaml
 .env
 storage/*
+
+tests/_output/*

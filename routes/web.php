@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::resource('/calc', 'CalcController');
+
+Route::get('/admin/{user}', 'AdminController@show');

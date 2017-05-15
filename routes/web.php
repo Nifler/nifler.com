@@ -21,4 +21,6 @@ Route::get('/home', 'HomeController@index');
 
 Route::resource('/calc', 'CalcController');
 
-Route::get('/admin/{user}', 'AdminController@show');
+Route::get('/neural_network/{network}', 'NeuralNetworkController@show');
+
+Route::get('/admin/{user}', 'AdminController@index');

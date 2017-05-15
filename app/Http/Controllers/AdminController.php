@@ -7,7 +7,10 @@ use App\Models\User;
 class AdminController extends Controller
 {
 
-    public function show(User $user){
-
+    public function index(User $user){
+        return [
+            'name' => $user->name,
+            'email' => $user->email
+        ];
     }
 }

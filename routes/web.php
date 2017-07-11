@@ -18,9 +18,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
-
+/**
+ * Calc
+ */
 Route::resource('/calc', 'CalcController');
 
-Route::get('/neural_network/{network}', 'NeuralNetworkController@show');
+/**
+ * Admin Panel
+ */
+Route::get('/admin', 'AdminController@index');
+Route::get('/admin/{user}', 'AdminController@show');
 
-Route::get('/admin/{user}', 'AdminController@index');
+/**
+ * Neural network
+ */
+Route::resource('/cezar', 'CezarController');

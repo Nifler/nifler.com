@@ -27,4 +27,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Переопределение поля в базе по которому автоматически будет подтягиваться модель
+     *
+     */
+    public function getRouteKeyName()
+    {
+        return 'name';
+    }
 }

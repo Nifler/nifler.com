@@ -6,6 +6,7 @@ namespace App\Providers;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -27,9 +28,12 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router = Route::getFacadeRoot();
 
-        $router->bind('user', function ($value) {
-            return User::where('name', $value)->first();
+        $router->model('user', User::class, function(){
+            abort(403, 'Нет такого пользователя');
         });
+    //    $router->bind('user', function ($value) {
+    //        return User::where('name', $value)->first();
+    //    });
 
         parent::boot();
     }

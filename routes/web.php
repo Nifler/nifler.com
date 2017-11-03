@@ -30,6 +30,7 @@ Route::get('/admin', 'AdminController@index');
 Route::get('/admin/{user}', 'AdminController@show');
 
 /**
- * Neural network
- */
-Route::resource('/cezar', 'CezarController');//->middleware(\App\Http\Middleware\Headers::class);
+ * Cezar decoder
+ * */
+Route::get('/cezar/learning', 'CezarController@index');
+Route::post('/cezar/learning', 'CezarController@store')->name('cezarLearning.store');;

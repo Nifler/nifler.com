@@ -34,3 +34,9 @@ Route::get('/admin/{user}', 'AdminController@show');
  * */
 Route::get('/cezar/learning', 'CezarController@index');
 Route::post('/cezar/learning', 'CezarController@store')->name('cezarLearning.store');;
+
+
+Route::get('/develop', 'DevelopController@index');
+
+Route::get('/stripe', 'StripeController@index');
+Route::post('/stripe', 'StripeController@store');

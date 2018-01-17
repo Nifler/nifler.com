@@ -39,12 +39,19 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Exception  $e
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Exception $e)
     {
-        return parent::render($request, $exception);
+        if ((bool)$request->input('default-error-page') === true) {
+            return parent::render($request, $e);
+        }
+
+        return self::formatResponse(
+            'There has been an error processing your request.',
+            Response::HTTP_INTERNAL_SERVER_ERROR
+        );
     }
 
     /**
@@ -61,5 +68,27 @@ class Handler extends ExceptionHandler
         }
 
         return redirect()->guest('login');
+    }
+
+    /**
+     * @param $msg
+     * @param $code
+     * @param array $debugData
+     * @return mixed
+     */
+    public static function formatResponse($msg, $code, $debugData = [])
+    {
+        if (\Config::get('app.debug') !== true) {
+            $debugData = [];
+        }
+
+        return response()->json(array_merge([
+            'errors' => [
+                [
+                    "message" => $msg,
+                    "id" => AppServiceProvider::getUid(),
+                ]
+            ]
+        ], $debugData), $code);
     }
 }

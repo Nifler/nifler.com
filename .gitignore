@@ -2,6 +2,7 @@
 /bootstrap/cache
 /node_modules
 /public/storage
+/public/.well-known
 /storage/*.key
 /.idea
 Homestead.json

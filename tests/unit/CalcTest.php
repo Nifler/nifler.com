@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\Calc;
+use App\Services\Bot;
 
 class CalcTest extends \Codeception\Test\Unit
 {
@@ -11,7 +11,7 @@ class CalcTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        $this->tester = new Calc(45, 15);
+        $this->tester = new Bot(45, 15);
     }
 
     protected function _after()

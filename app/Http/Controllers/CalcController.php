@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\Calc;
+use App\Services\Bot;
 
 class CalcController extends Controller
 {
@@ -32,7 +32,7 @@ class CalcController extends Controller
         $num2 = $request->num2;
         $sign = $request->sign;
 
-        $formula = new Calc($num1, $num2);
+        $formula = new Bot($num1, $num2);
 
         return view('calc',['result' => $formula->calculate($sign)]);
     }

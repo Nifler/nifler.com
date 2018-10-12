@@ -33,3 +33,8 @@ Route::get('/admin/{user}', 'AdminController@show');
  * Neural network
  */
 Route::resource('/cezar', 'CezarController');//->middleware(\App\Http\Middleware\Headers::class);
+
+/**
+ * BotPool test
+ */
+Route::resource('/botpool', 'BotPoolController');

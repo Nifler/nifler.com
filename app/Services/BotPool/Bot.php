@@ -63,6 +63,16 @@ class Bot
         }
     }
 
+    private function checkBotStatus()
+    {
+        //проверка енергии
+    }
+
+    private function getCommand()
+    {
+        $this->genome->getCommandId();
+    }
+
     /**
      * Bot constructor.
      *
@@ -76,5 +86,14 @@ class Bot
         $this->setCoordinates($latitude, $longitude);
         $this->genome = $genome;
         $this->setGenomeMutation();
+    }
+
+    public function runStep()
+    {
+        $this->checkBotStatus();
+        $this->getCommand();
+        // выполнение команды
+        $this->checkBotStatus();
+        // конец
     }
 }

@@ -95,4 +95,13 @@ class Genome
         $value = mt_rand(0,63);
         $this->genomeCode[$gen] = $value;
     }
+
+    public function getCommandId()
+    {
+        // ищем id
+        // проверяем существование комманды
+        // промотка на след место в геноме если нет комманды
+        // получение параметров с генома(если нужно)
+        // возвращаем (int)id (array)params
+    }
 }

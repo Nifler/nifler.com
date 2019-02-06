@@ -3,6 +3,7 @@
 namespace App\Services\BotPool\Bot;
 
 use App\Services\BotPool\Bot\Commands\CommandInterface;
+use App\Services\BotPool\Pool\Pool;
 use Illuminate\Support\Collection;
 
 /**
@@ -14,6 +15,13 @@ use Illuminate\Support\Collection;
  */
 class Bot
 {
+    /**
+     * @var Pool
+     *
+     * Вся лужа с данными по каждом пикселе
+     */
+    private $pool;
+
     /**
      * @var int
      *
@@ -121,12 +129,14 @@ class Bot
      * Bot constructor.
      *
      * @param Genome $genome
+     * @param Pool $pool
      *
      */
-    public function __construct(Genome $genome)
+    public function __construct(Genome $genome, Pool $pool)
     {
         $this->energy = 0;
         $this->genome = $genome;
+        $this->pool = $pool;
         $this->setGenomeMutation();
     }
 
@@ -135,11 +145,12 @@ class Bot
      */
     public function runStep()
     {
+        $this->pool->getPixel($this->latitude, $this->longitude);
         $this->checkBotStatus();
         $this->initCommand();
         $updatedBotInfo = $this->command->run($this->getBotInfo());
         $this->setBotInfo($updatedBotInfo);
-        // выполнение команды
+
         $this->checkBotStatus();
         // конец
     }

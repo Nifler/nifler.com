@@ -37,25 +37,20 @@ class BotPoolServiceProvider extends ServiceProvider
             return new Genome($app->make(CommandService::class));
         });
 
-        $this->app->bind(Bot::class, function ($app) {
-//он здесь не нужен - выпилить и создавать при создании первого организма. следующие только клонированием
-            return new Bot($app->make(Genome::class));
-        });
-
-        $this->app->bind(Pool::class, function ($app) {
+        $this->app->singleton(Pool::class, function ($app) {
             $width = 5;
             $height = 3;
-            $poolPoints = [];
-            for ($i=1; $i<=$width; $i++) {
-                for ($j=1; $j<=$height; $j++) {
-                    $poolPoints[] = new PoolPixel($i, $j);
-                }
-            }
-            return new Pool(collect($poolPoints));
+            return new Pool($width, $height);
+
         });
 
         $this->app->bind(Population::class, function ($app) {
             return new Population();
+        });
+
+        $this->app->bind(Bot::class, function ($app) {
+//он здесь не нужен - выпилить и создавать при создании первого организма. следующие только клонированием
+            return new Bot($app->make(Genome::class), $app->make(Pool::class));
         });
     }
 }

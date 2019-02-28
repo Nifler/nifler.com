@@ -47,10 +47,5 @@ class BotPoolServiceProvider extends ServiceProvider
         $this->app->bind(Population::class, function ($app) {
             return new Population();
         });
-
-        $this->app->bind(Bot::class, function ($app) {
-//он здесь не нужен - выпилить и создавать при создании первого организма. следующие только клонированием
-            return new Bot($app->make(Genome::class), $app->make(Pool::class));
-        });
     }
 }

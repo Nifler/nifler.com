@@ -4,6 +4,13 @@ namespace App\Services\BotPool\Bot;
 
 use Illuminate\Support\Collection;
 
+/**
+ * Class Population
+ *
+ * Коллекция всех существующих ботов на данный момент.
+ *
+ * @package App\Services\BotPool\Bot
+ */
 class Population
 {
     /**

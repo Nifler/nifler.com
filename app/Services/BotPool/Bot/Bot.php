@@ -92,8 +92,6 @@ class Bot
 
     /**
      * Получаем класс комманды бота на этом ходу согласно геному
-     *
-     * @return string
      */
     private function initCommand()
     {
@@ -145,7 +143,7 @@ class Bot
      */
     public function runStep()
     {
-        $this->pool->getPixel($this->latitude, $this->longitude);
+        $curentPixel = $this->pool->getPixel($this->latitude, $this->longitude);
         $this->checkBotStatus();
         $this->initCommand();
         $updatedBotInfo = $this->command->run($this->getBotInfo());

@@ -23,7 +23,7 @@ class Controller
     private function getFirstBot()              // аля фабричный метод, но нужно будет подумать над реализацией
     {
         $bot = new Bot($this->genome, $this->pool);
-        $bot->setCoordinates([1,1]);
+        $bot->setCoordinates([0,0]);
         return $bot;
     }
 
@@ -35,7 +35,6 @@ class Controller
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
         while ($i++<1000) {
             $this->population->getBots()->each(function (Bot $bot, $key) {
-                dd($bot, $key);
                 $bot->runStep();
             });
         }

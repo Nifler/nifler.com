@@ -2,12 +2,10 @@
 
 namespace App\Services\BotPool;
 
-use App\Services\BotPool\Bot\Bot;
 use App\Services\BotPool\Bot\CommandService;
 use App\Services\BotPool\Bot\Genome;
 use App\Services\BotPool\Bot\Population;
 use App\Services\BotPool\Pool\Pool;
-use App\Services\BotPool\Pool\PoolPixel;
 use Illuminate\Support\ServiceProvider;
 
 class BotPoolServiceProvider extends ServiceProvider
@@ -41,7 +39,6 @@ class BotPoolServiceProvider extends ServiceProvider
             $width = 5;
             $height = 3;
             return new Pool($width, $height);
-
         });
 
         $this->app->bind(Population::class, function ($app) {

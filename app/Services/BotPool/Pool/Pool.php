@@ -36,7 +36,7 @@ class Pool
     public function getPixel($latitude, $longitude)
     {
         $key = $latitude*$this->width + $longitude;
-        dd($this->poolPixels[$key]);
-        return ;
+
+        return $this->poolPixels[$key];
     }
 }

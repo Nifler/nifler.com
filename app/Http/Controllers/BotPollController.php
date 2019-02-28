@@ -6,7 +6,7 @@ use App\Services\BotPool\Bot\Bot;
 use App\Services\BotPool\Pool\Pool;
 use App\Services\BotPool\Controller as BotPoolController;
 
-class TestController extends Controller
+class BotPollController extends Controller
 {
 
     private $bot;

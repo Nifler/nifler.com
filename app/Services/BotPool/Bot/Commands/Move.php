@@ -15,6 +15,8 @@ class Move implements CommandInterface
 
     private $botInfo;
 
+    private $changesOfBotInfo;
+
     private function checkBotInfo(Collection $botInfo)
     {
         $diff = array_diff($this->botInfoMap, $botInfo->keys()->all());
@@ -40,7 +42,6 @@ class Move implements CommandInterface
 
     private function getPositionChanges(int $direction)
     {
-        // также проверяем не конец ли карты во ширине.
         // если да, то движение должно быть круговым(умножаем х на ширину пула)
         switch ($direction) {
             case 1:
@@ -68,8 +69,8 @@ class Move implements CommandInterface
     {
         $positionChanges = $this->getPositionChanges($this->getDirection());
 
-        $this->botInfo->put('latitude', $this->botInfo->get('latitude') + $positionChanges[0]);
-        $this->botInfo->put('longitude', $this->botInfo->get('longitude') + $positionChanges[1]);
+        $this->changesOfBotInfo->put('latitude', $positionChanges[0]);
+        $this->changesOfBotInfo->put('longitude', $positionChanges[1]);
 
         //Обовить состояние пула (освободить предыдущий пиксель и занять новый)
     }
@@ -90,6 +91,6 @@ class Move implements CommandInterface
 
         $this->changeBotInfo();
 
-        return $this->botInfo;
+        return $this->changesOfBotInfo;
     }
 }

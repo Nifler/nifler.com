@@ -130,12 +130,10 @@ class Bot
      * @param Pool $pool
      *
      */
-    public function __construct(Genome $genome, Pool $pool)
+    public function __construct()
     {
+        $this->genome = new Genome();
         $this->energy = 0;
-        $this->genome = $genome;
-        $this->pool = $pool;
-        $this->setGenomeMutation();
     }
 
     /**

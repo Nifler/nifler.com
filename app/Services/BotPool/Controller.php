@@ -2,45 +2,49 @@
 
 namespace App\Services\BotPool;
 
-use App\Services\BotPool\Bot\Genome;
-use App\Services\BotPool\Bot\Population;
+use App\Services\BotPool\Bot\BotPopulation;
 use App\Services\BotPool\Bot\Bot;
 use App\Services\BotPool\Pool\Pool;
 
 class Controller
 {
-    private $population;
-    private $genome;
+    private $botPopulation;
     private $pool;
 
-    public function __construct(Pool $pool)
+    public function __construct(Pool $pool, BotPopulation $botPopulation)
     {
-        dd($pool);
-        $this->population = $population;
-        $this->genome = $genome;
+        $this->botPopulation = $botPopulation;
         $this->pool = $pool;
-    }
-
-    private function getFirstBot()              // аля фабричный метод, но нужно будет подумать над реализацией
-    {
-        $bot = new Bot($this->genome, $this->pool);
-        $bot->setCoordinates([0,0]);
-        return $bot;
     }
 
     public function run()
     {
-        // создание первого организма
-        $this->population->addBot($this->getFirstBot());
+        $this->botPopulation->makeBot();
 
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
+
         while ($i++<1000) {
-            $this->population->getBots()->each(function (Bot $bot, $key) {
-                $bot->runStep();
-            });
+            foreach ($this->botPopulation->getBots() as $bot) {
+                $this->runStep($bot);
+            }
         }
 
         // получение снимка состояния(картинка пула с ботами)
-        return $this->population->getBots()->dump();
+        return $this->botPopulation->runBotStep()->dump();
+    }
+
+    private function runBotStep(Bot $bot)
+    {
+        //get command id
+        //get list of required for command info
+        //get info from bot
+        //get info from poll
+        //run command
+        //set new ot info
+        //bot after processing
+            //die
+            //clone
+            //update population
+        //update pool
     }
 }

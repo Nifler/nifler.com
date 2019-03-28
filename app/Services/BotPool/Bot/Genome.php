@@ -66,21 +66,6 @@ class Genome
     }
 
     /**
-     * Присвоение генома для нового бота
-     *
-     * @param $genomeCode
-     */
-    public function setGenomeCode($genomeCode): void
-    {
-        if (empty($genomeCode)) {
-            $this->genomeCode = $this->createStartGenomeCode();
-            return;
-        }
-        $this->genomeCode = $genomeCode;
-        $this->firstIndividual = true;
-    }
-
-    /**
      * Genome constructor.
      *
      * @param CommandService $commandService
@@ -88,11 +73,10 @@ class Genome
      *
      * @return void
      */
-    public function __construct(CommandService $commandService)
+    public function __construct()
     {
         $this->genomeCodePosition = self::DEFAULT_GENOME_CODE_POSITION;
-        $this->commandService = $commandService;
-        $this->setGenomeCode([]);//здесь при наследовании нужно переливать геном
+        $this->genomeCode = $this->createStartGenomeCode();
     }
 
     /**
@@ -108,36 +92,5 @@ class Genome
         $gen = mt_rand(0, 63);
         $value = mt_rand(0, 63);
         $this->genomeCode[$gen] = $value;
-    }
-
-    /**
-     * Получаем класс комманды для исполнения
-     *
-     * @return CommandInterface
-     */
-    public function getCommand():CommandInterface
-    {
-        // ищем id команды
-        $commandId = $this->genomeCode[$this->genomeCodePosition];
-
-        $i = 0;
-        while (!$this->commandService->setCommandId($commandId)) {
-            $i++;
-            $this->genomeCodePosition = ($this->genomeCodePosition + $commandId) % self::MAX_LENGTH;
-            if ($i>15) {
-                dd('нету команды для бота после 15 итераций поиска');
-                // нету команды. придумать что делать с таким неудачником
-            }
-        }
-
-        //изучаем комманду
-        $commandInfo = $this->commandService->getCommandInfo();
-
-        // получение команды по id
-        $command = $this->commandService->getCommand();
-
-        // получение параметров с генома(если нужно)
-        // возвращаем (int)id (array)params
-        return $command;
     }
 }

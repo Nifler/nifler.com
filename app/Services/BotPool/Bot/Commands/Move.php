@@ -69,6 +69,7 @@ class Move implements CommandInterface
     {
         $positionChanges = $this->getPositionChanges($this->getDirection());
 
+        dd($this->changesOfBotInfo);
         $this->changesOfBotInfo->put('latitude', $positionChanges[0]);
         $this->changesOfBotInfo->put('longitude', $positionChanges[1]);
 

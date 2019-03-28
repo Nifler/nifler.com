@@ -13,8 +13,9 @@ class Controller
     private $genome;
     private $pool;
 
-    public function __construct(Population $population, Genome $genome, Pool $pool)
+    public function __construct(Pool $pool)
     {
+        dd($pool);
         $this->population = $population;
         $this->genome = $genome;
         $this->pool = $pool;

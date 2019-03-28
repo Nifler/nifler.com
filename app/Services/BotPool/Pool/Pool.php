@@ -2,6 +2,7 @@
 
 namespace App\Services\BotPool\Pool;
 
+use App\Services\BotPool\Bot\Population;
 use Illuminate\Support\Collection;
 
 class Pool
@@ -15,8 +16,10 @@ class Pool
 
     private $height;
 
-    public function __construct(int $width, int $height)
+    public function __construct(Population $population, int $width, int $height)
     {
+        App::make(Population::class);
+        dd($population, $width, $height);
         $this->width = $width;
         $this->height = $height;
         $this->fillPixels();

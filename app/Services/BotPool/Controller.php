@@ -4,17 +4,20 @@ namespace App\Services\BotPool;
 
 use App\Services\BotPool\Bot\BotPopulation;
 use App\Services\BotPool\Bot\Bot;
+use App\Services\BotPool\Command\CommandService;
 use App\Services\BotPool\Pool\Pool;
 
 class Controller
 {
+    private $commandService;
     private $botPopulation;
     private $pool;
 
-    public function __construct(Pool $pool, BotPopulation $botPopulation)
+    public function __construct(Pool $pool, BotPopulation $botPopulation, CommandService $commandService)
     {
-        $this->botPopulation = $botPopulation;
         $this->pool = $pool;
+        $this->botPopulation = $botPopulation;
+        $this->commandService = $commandService;
     }
 
     public function run()
@@ -25,7 +28,7 @@ class Controller
 
         while ($i++<1000) {
             foreach ($this->botPopulation->getBots() as $bot) {
-                $this->runStep($bot);
+                $this->runBotStep($bot);
             }
         }
 
@@ -35,7 +38,14 @@ class Controller
 
     private function runBotStep(Bot $bot)
     {
-        //get command id
+        $commandList = $this->commandService->getCommandList();
+
+        $commandId = $bot->getCommandId($commandList);
+
+        dd($commandId);
+
+        //устанавливаем нужную комманду в сервисе по id
+        $this->commandService->getReuiredInformationList();
         //get list of required for command info
         //get info from bot
         //get info from poll

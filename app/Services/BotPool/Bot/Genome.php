@@ -2,8 +2,6 @@
 
 namespace App\Services\BotPool\Bot;
 
-use App\Services\BotPool\Bot\Commands\CommandInterface;
-
 /**
  * Class Genome
  *
@@ -43,13 +41,6 @@ class Genome
      * Первая особь в виде(первая особь в мире)
      */
     private $firstIndividual = false;
-
-    /**
-     * @var CommandService
-     *
-     * Работа с командами бля бота.
-     */
-    private $commandService;
 
     /**
      * Создание генома для бота без родительского генома
@@ -92,5 +83,22 @@ class Genome
         $gen = mt_rand(0, 63);
         $value = mt_rand(0, 63);
         $this->genomeCode[$gen] = $value;
+    }
+
+    public function getCommandId(array $idList)
+    {
+        for($i=1; $i<=15; $i++){
+            if( in_array($this->genomeCode[$this->genomeCodePosition], $idList) ) {
+                return $this->genomeCode[$this->genomeCodePosition];
+            }
+
+            $this->moveGenomeCodePosition($this->genomeCode[$this->genomeCodePosition]);
+        }
+        return 1;//default command
+    }
+
+    private function moveGenomeCodePosition($step = 1)
+    {
+
     }
 }

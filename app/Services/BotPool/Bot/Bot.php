@@ -92,10 +92,16 @@ class Bot
 
     /**
      * Получаем класс комманды бота на этом ходу согласно геному
+     *
+     * @param array $commandList
+     *
+     * @return integer
      */
-    private function initCommand()
+    public function getCommandId(array $commandList): int
     {
-        $this->command = $this->genome->getCommand();
+        $idList = array_keys($commandList);
+
+        return $this->genome->getCommandId($idList);
     }
 
     /**
@@ -134,20 +140,5 @@ class Bot
     {
         $this->genome = new Genome();
         $this->energy = 0;
-    }
-
-    /**
-     * Новый ход бота
-     */
-    public function runStep()
-    {
-        $curentPixel = $this->pool->getPixel($this->latitude, $this->longitude);
-        $this->checkBotStatus();
-        $this->initCommand();
-        $updatedBotInfo = $this->command->run($this->getBotInfo());
-        $this->setBotInfo($updatedBotInfo);
-
-        $this->checkBotStatus();
-        // конец
     }
 }

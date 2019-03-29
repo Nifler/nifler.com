@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\BotPool\Bot;
+namespace App\Services\BotPool\Command;
 
 use App\Services\BotPool\Bot\Commands\CommandInterface;
 use App\Services\BotPool\Bot\Commands\Move;
@@ -27,7 +27,7 @@ class CommandService
      */
     private function checkCommand(int $id): bool
     {
-        return !empty(self::COMMANDS[$id]);
+
     }
 
     /**
@@ -37,16 +37,8 @@ class CommandService
      *
      * @return bool
      */
-    public function setCommandId(int $id): bool
+    public function setCommand(int $id): bool
     {
-        if ($this->checkCommand($id)) {
-            $command = self::COMMANDS[$id];
-            $this->commandId = $id;
-            $this->command = new $command();
-            $this->commandInfo = ['test info'];
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -59,13 +51,14 @@ class CommandService
         return $this->command;
     }
 
-    /**
-     * Инфа по комманде. Пока не нужно
-     *
-     * @return array
-     */
-    public function getCommandInfo(): array
+
+    public function getReuiredInformationList()
     {
-        return $this->commandInfo;
+        return $this->command;
+    }
+
+    public function getCommandList(): array
+    {
+        return self::COMMANDS;
     }
 }

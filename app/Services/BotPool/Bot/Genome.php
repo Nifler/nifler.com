@@ -26,14 +26,14 @@ class Genome
      *
      * Позиция в цепочке генома на данный момент
      */
-    private $genomeCodePosition;
+    public $genomeCodePosition;
 
     /**
      * @var
      *
      * Цепочка с кодом генома
      */
-    private $genomeCode;
+    public $genomeCode;
 
     /**
      * @var bool
@@ -91,14 +91,15 @@ class Genome
             if( in_array($this->genomeCode[$this->genomeCodePosition], $idList) ) {
                 return $this->genomeCode[$this->genomeCodePosition];
             }
-
-            $this->moveGenomeCodePosition($this->genomeCode[$this->genomeCodePosition]);
+            $this->moveGenomeCodePosition();
         }
-        return 1;//default command
+        return 2;//default command
     }
 
-    private function moveGenomeCodePosition($step = 1)
+    private function moveGenomeCodePosition()
     {
+        $res = $this->genomeCodePosition + $this->genomeCode[$this->genomeCodePosition];
 
+        $this->genomeCodePosition = $res % self::MAX_LENGTH;
     }
 }

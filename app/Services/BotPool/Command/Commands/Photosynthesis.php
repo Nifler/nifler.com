@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Services\BotPool\Bot\Commands;
+namespace App\Services\BotPool\Command\Commands;
 
 class Photosynthesis implements CommandInterface
 {
-    public function run($botInfo)
+    public function getInfoList(): array
     {
-        echo('Command Photosynthesis');
+        dd('dontWork', self::class);
+
+        return [];
     }
 }

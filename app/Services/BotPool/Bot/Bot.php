@@ -113,8 +113,18 @@ class Bot
         // kill this bot
     }
 
-    private function getBotInfo()                   //BotInfo должен быть доп класом а не колекцией(позже переделать)
+    public function getBotInfo($list)
     {
+        $info = [];
+        foreach ($list as $item => $option)
+            switch ($item) {
+                case 'genom' :
+                    $info['genom'] = $this->genome->genomeCode;
+                    break;
+                case 'commandId' :
+                    $info['commandId'] = $this->genome->genomeCodePosition;
+                    break;
+            }
         return collect([
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,

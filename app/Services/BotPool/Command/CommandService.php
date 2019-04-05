@@ -2,9 +2,9 @@
 
 namespace App\Services\BotPool\Command;
 
-use App\Services\BotPool\Bot\Commands\CommandInterface;
-use App\Services\BotPool\Bot\Commands\Move;
-use App\Services\BotPool\Bot\Commands\Photosynthesis;
+
+use App\Services\BotPool\Command\Commands\Move;
+use App\Services\BotPool\Command\Commands\Photosynthesis;
 
 class CommandService
 {
@@ -19,18 +19,6 @@ class CommandService
     private $command;
 
     /**
-     * Проверка наличия комманды для ид
-     *
-     * @param int $id
-     *
-     * @return bool
-     */
-    private function checkCommand(int $id): bool
-    {
-
-    }
-
-    /**
      * Установка комманды для бота
      *
      * @param int $id
@@ -39,22 +27,16 @@ class CommandService
      */
     public function setCommand(int $id): bool
     {
-    }
+        $class = self::COMMANDS[$id];
+        $this->commandId = $id;
+        $this->command = new $class();
 
-    /**
-     * Возвращает комманду
-     *
-     * @return string
-     */
-    public function getCommand(): CommandInterface
-    {
-        return $this->command;
+        return true;
     }
-
 
     public function getReuiredInformationList()
     {
-        return $this->command;
+        return $this->command->getInfoList();
     }
 
     public function getCommandList(): array

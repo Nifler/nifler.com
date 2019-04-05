@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Services\BotPool\Bot\Commands;
+namespace App\Services\BotPool\Command\Commands;
 
 interface CommandInterface
 {
-    public function run($botInfo);
+
+    public function getInfoList(): array ;
 }

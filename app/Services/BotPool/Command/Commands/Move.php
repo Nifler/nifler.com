@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\BotPool\Bot\Commands;
+namespace App\Services\BotPool\Command\Commands;
 
 use Illuminate\Support\Collection;
 
@@ -82,16 +82,18 @@ class Move implements CommandInterface
         // смена енергии
     }
 
-    public function run($botInfo)
+    public function getInfoList(): array
     {
-        $this->checkBotInfo($botInfo);
+        $res = [
+            'bot' => [
+                'genom' => true,
+                'commandId' => true
+            ],
+            'pool' => [
+                'area' => 1
+            ]
+        ];
 
-        // проверка наявности свободного места в соседнем пикселе
-            // выбор нового направления движения пока не будет свободно или реджект
-
-
-        $this->changeBotInfo();
-
-        return $this->changesOfBotInfo;
+        return $res;
     }
 }

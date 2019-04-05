@@ -38,16 +38,20 @@ class Controller
 
     private function runBotStep(Bot $bot)
     {
+        dd($bot);
         $commandList = $this->commandService->getCommandList();
 
         $commandId = $bot->getCommandId($commandList);
 
-        dd($commandId);
+        $this->commandService->setCommand($commandId);
 
-        //устанавливаем нужную комманду в сервисе по id
-        $this->commandService->getReuiredInformationList();
-        //get list of required for command info
+        $list = $this->commandService->getReuiredInformationList();
+
+        $botInfo = $bot->getBotInfo($list['bot']);
+        dd($botInfo);
+
         //get info from bot
+
         //get info from poll
         //run command
         //set new ot info

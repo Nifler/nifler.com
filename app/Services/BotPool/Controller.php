@@ -22,11 +22,16 @@ class Controller
 
     public function run()
     {
-        $this->botPopulation->makeBot();
+        $id = $this->botPopulation->makeBot();
+
+        $y = 0;
+        $x = 2;
+
+        $this->pool->registerItem($id, 1, $y, $x);
 
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
-        while ($i++<1000) {
+        while ($i++ < 1000) {
             foreach ($this->botPopulation->getBots() as $bot) {
                 $this->runBotStep($bot);
             }
@@ -38,7 +43,6 @@ class Controller
 
     private function runBotStep(Bot $bot)
     {
-        dd($bot);
         $commandList = $this->commandService->getCommandList();
 
         $commandId = $bot->getCommandId($commandList);
@@ -48,11 +52,10 @@ class Controller
         $list = $this->commandService->getReuiredInformationList();
 
         $botInfo = $bot->getBotInfo($list['bot']);
-        dd($botInfo);
+        $poolInfo = $this->pool->getInfo($list['pool'], $bot->id);
+        dd(__LINE__, $botInfo, $poolInfo);
 
-        //get info from bot
 
-        //get info from poll
         //run command
         //set new ot info
         //bot after processing

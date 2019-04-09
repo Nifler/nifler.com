@@ -15,12 +15,12 @@ class Pool
     private $map = [
         'pixelId' => [
             'itemType' => 0,
-            'itemId' => 0
+            'itemId' => 0,
         ]
     ];
 
     /**
-     * @var Collection
+     * @var array
      */
     private $poolPixels;
 
@@ -28,10 +28,17 @@ class Pool
 
     private $height;
 
-    private $population;
+    private $botPopulation;
 
-    public function __construct()
+    /**
+     * @var array
+     * itemId->pixelId
+     */
+    private $itemPixelRelation;
+
+    public function __construct(BotPopulation $botPopulation)
     {
+        $this->botPopulation = $botPopulation;
         $this->width = config('botPool.pool.width');
         $this->height = config('botPool.pool.height');
         $this->fillPixels();
@@ -40,18 +47,75 @@ class Pool
     private function fillPixels()
     {
         $poolPoints = [];
-        for ($i=0; $i < $this->width; $i++) {
-            for ($j=0; $j < $this->height; $j++) {
-                $poolPoints[] = new PoolPixel($i, $j);
+        for ($y = 0; $y < $this->width; $y++) {
+            for ($x = 0; $x < $this->height; $x++) {
+                $poolPoints[] = new PoolPixel($y, $x);
             }
         }
-        $this->poolPixels = collect($poolPoints);
+        $this->poolPixels = $poolPoints;
     }
 
-    public function getPixel($latitude, $longitude)
+    public function getPixelId($latitude, $longitude)
     {
-        $key = $latitude*$this->width + $longitude;
+        return $latitude * $this->width + $longitude;
+    }
 
-        return $this->poolPixels[$key];
+    public function getInfo($list, $botId): array
+    {
+        $res = [];
+        foreach ($list as $key => $value) {
+            switch ($key) {
+                case 'area' :
+                    $pixel = $this->getPixelByItemId($botId);
+                    $res['area'] = $this->getBotArea($value, $pixel);
+            }
+        }
+        return $res;
+    }
+
+    private function getPixelByItemId($itemId)
+    {
+        $pixelId = $this->itemPixelRelation[$itemId];
+
+        return $this->poolPixels[$pixelId];
+    }
+
+    private function getBotArea($radius, $pixel): array
+    {
+        $area = [];
+
+        for ($y = -$radius; $y <= $radius; $y++) {
+            for ($x = -$radius; $x <= $radius; $x++) {
+                if(!isset($area[$y])) {
+                    $area[$y] = [];
+                }
+                if ($pixel->y + $y < 0 || $pixel->y + $y > $this->height) {
+                    $area[$y][$x] = -1;
+                    continue;
+                }
+                $pixelY = $pixel->y + $y;
+
+                if ($pixel->x + $x < 0) {
+                    $pixelX = $pixel->x + $x + $this->width;
+                } elseif ($pixel->x + $x > $this->width) {
+                    $pixelX = $pixel->x + $x - $this->width;
+                } else {
+                    $pixelX = $pixel->x + $x;
+                }
+
+                $foundPixelId = $this->getPixelId($pixelY, $pixelX);
+                $area[$y][$x] = $this->poolPixels[$foundPixelId]->type ?? 0;
+            }
+        }
+
+        return $area;
+    }
+
+    public function registerItem($itemId, $type, $y, $x)
+    {
+        $pixelId = $this->getPixelId($y, $x);
+        $this->itemPixelRelation[$itemId] = $pixelId;
+
+        $this->poolPixels[$pixelId]->setItemType($type);
     }
 }

@@ -4,14 +4,25 @@ namespace App\Services\BotPool\Pool;
 
 class PoolPixel
 {
-    private $latitude;
-    private $longitude;
-    private $space;
+    public $x;//hight
+    public $y;//width
 
-    public function __construct($latitude, $longitude)
+    /**
+     * @var integer
+     *
+     * 0 - пусто
+     * 1 - бот
+     */
+    public $type;
+
+    public function __construct($y, $x)
     {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
-        $this->space = 1;
+        $this->y = $y;
+        $this->x = $x;
+    }
+
+    public function setItemType(int $type)
+    {
+        $this->type = $type;
     }
 }

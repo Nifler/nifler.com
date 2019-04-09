@@ -16,32 +16,11 @@ use Illuminate\Support\Collection;
 class Bot
 {
     /**
-     * @var Pool
-     *
-     * Вся лужа с данными по каждом пикселе
-     */
-    private $pool;
-
-    /**
      * @var int
      *
      * Енергия бота на данный момент
      */
     private $energy;
-
-    /**
-     * @var int
-     *
-     * Позиция по оси x
-     */
-    private $latitude;
-
-    /**
-     * @var int
-     *
-     * Позиция по оси y
-     */
-    private $longitude;
 
     /**
      * @var Genome
@@ -51,20 +30,9 @@ class Bot
     private $genome;
 
     /**
-     * @var CommandInterface
+     * @var integer
      */
-    private $command;
-
-    /**
-     * Установка координат организма
-     *
-     * @param array $coordinates
-     */
-    public function setCoordinates(array $coordinates): void
-    {
-        $this->latitude = $coordinates[0];
-        $this->longitude = $coordinates[1];
-    }
+    public $id;
 
     /**
      * Проверка на мутацию и запуск мутации генома для бота
@@ -113,7 +81,7 @@ class Bot
         // kill this bot
     }
 
-    public function getBotInfo($list)
+    public function getBotInfo($list): array
     {
         $info = [];
         foreach ($list as $item => $option)
@@ -125,18 +93,7 @@ class Bot
                     $info['commandId'] = $this->genome->genomeCodePosition;
                     break;
             }
-        return collect([
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'energy' => $this->energy
-        ]);
-    }
-
-    private function setBotInfo(Collection $botInfo)
-    {
-        $botInfo->each(function ($item, $key) {
-            $this->$key = $item;
-        });
+        return $info;
     }
 
     /**
@@ -150,5 +107,6 @@ class Bot
     {
         $this->genome = new Genome();
         $this->energy = 0;
+        $this->id = 0;
     }
 }

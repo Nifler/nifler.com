@@ -36,7 +36,6 @@ class BotPopulation
     {
         $bot = new Bot();
         $botId = $this->addBot($bot);
-        $bot->setCoordinates([0,0]);
         return $botId;
     }
 }

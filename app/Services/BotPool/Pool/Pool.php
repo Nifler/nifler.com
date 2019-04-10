@@ -73,7 +73,7 @@ class Pool
         return $res;
     }
 
-    private function getPixelByItemId($itemId)
+    private function getPixelByItemId($itemId): PoolPixel
     {
         $pixelId = $this->itemPixelRelation[$itemId];
 
@@ -111,12 +111,44 @@ class Pool
         return $area;
     }
 
-    public function registerItem($itemId, $type, $y, $x)
+    private function removeItem($itemId)
     {
-        $pixelId = $this->getPixelId($y, $x);
-        $this->itemPixelRelation[$itemId] = $pixelId;
+        $pixel = $this->getPixelByItemId($itemId);
+        $pixel->setItemType(0);
+        unset($this->itemPixelRelation[$itemId]);
+        return [
+            'status' => true,
+            'id' => $itemId
+        ];
+    }
 
-        $this->poolPixels[$pixelId]->setItemType($type);
+    private function addItem(array $info)
+    {
+        //
+    }
+
+    public function registerItem($item)
+    {
+        $result = [];
+        foreach ($item as $key => $value) {
+            switch ($key) {
+                case 'addItem':
+                    $this->addItem($value);
+                    break;
+                case 'removeItem':
+                    $this->removeItem($value);
+                    $result[] = [
+                        'action' => 'remove',
+                        'id' => $value
+                    ];
+                    break;
+            }
+        }
+        return $result;
+//        $pixelId = $this->getPixelId($y, $x);
+//        $this->itemPixelRelation[$itemId] = $pixelId;
+//
+//        $this->poolPixels[$pixelId]->setItemType($type);
     }
 
     public function changeInfo($properties, $botId)

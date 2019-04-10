@@ -39,4 +39,62 @@ class BotPopulation
 
         return $botId;
     }
+
+    public function checkStatus(Bot $bot)
+    {
+        $list = [
+            'energy' => true
+        ];
+
+        $info = $bot->getBotInfo($list);
+
+        if ($info['energy'] <= 0) {
+            $id = $this->kill($bot);
+            return [
+                'removeItem' => $id
+            ];
+        }
+
+        if ($info['energy'] >=1000) {
+            $ids = $this->reproduction($bot);
+            return [
+                'addItem' => $ids
+            ];
+        }
+
+        return [
+            'result' => true
+        ];
+    }
+
+    /**
+     * На данный момент смерть это просто удаление бота с пула и популяции
+     *
+     * @param Bot $bot
+     *
+     * @return int
+     */
+    private function kill(Bot $bot)
+    {
+        unset($this->botPopulation[$bot->id]);
+        return $bot->id;
+    }
+
+    private function reproduction(Bot $bot)
+    {
+        $bot->changeInfo([
+            'energy' => 10
+        ]);
+
+        $childBot = clone $bot;
+
+        $this->botPopulation[] = $childBot;
+
+        $childBot->id = array_key_last($this->botPopulation);
+
+        return [
+            'parent' => $bot->id,
+            'child' => $childBot->id
+        ];
+    }
 }

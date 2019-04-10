@@ -2,10 +2,6 @@
 
 namespace App\Services\BotPool\Bot;
 
-use App\Services\BotPool\Bot\Commands\CommandInterface;
-use App\Services\BotPool\Pool\Pool;
-use Illuminate\Support\Collection;
-
 /**
  * Class Bot
  *
@@ -40,8 +36,13 @@ class Bot
     public function __construct()
     {
         $this->genome = new Genome();
-        $this->energy = 10;
+        $this->energy = 1000;
         $this->id = 0;
+    }
+
+    public function __clone()
+    {
+        $this->genome->mutate();
     }
 
     /**
@@ -91,6 +92,10 @@ class Bot
             switch ($property) {
                 case 'energyChange':
                     $this->energy += $value;
+                    break;
+                case 'energy':
+                    $this->energy = $value;
+                    break;
             }
         }
     }

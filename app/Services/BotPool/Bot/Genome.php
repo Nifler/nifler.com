@@ -36,13 +36,6 @@ class Genome
     public $genomeCode;
 
     /**
-     * @var bool
-     *
-     * Первая особь в виде(первая особь в мире)
-     */
-    private $firstIndividual = false;
-
-    /**
      * Создание генома для бота без родительского генома
      *
      * @return array
@@ -77,9 +70,6 @@ class Genome
      */
     public function mutate(): void
     {
-        if ($this->firstIndividual) {
-            return;
-        }
         $gen = mt_rand(0, 63);
         $value = mt_rand(0, 63);
         $this->genomeCode[$gen] = $value;

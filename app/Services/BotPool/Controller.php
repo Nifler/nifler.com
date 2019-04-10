@@ -24,20 +24,29 @@ class Controller
     {
         $id = $this->botPopulation->makeBot();
 
-        $y = 0;
-        $x = 2;
+        $item = [
+            'addItem' => [
+                'parent' => false,
+                'child' => $id
+            ]
+        ];
 
-        $this->pool->registerItem($id, 1, $y, $x);
+        $this->pool->registerItem($item);
+
+
 
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
         while ($i++ < 7) {
             foreach ($this->botPopulation->getBots() as $bot) {
-                //проверяем состояние бота(смерть размножение)
+                $res = $this->botPopulation->checkStatus($bot);
+
+                dd($res);
+//                $this->pool->
+
                 $this->runBotStep($bot);
             }
         }
-        dd($this->pool);
     }
 
     private function runBotStep(Bot $bot)

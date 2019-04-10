@@ -70,13 +70,13 @@ class Bot
         $info = [];
         foreach ($list as $item => $option) {
             switch ($item) {
-                case 'genome' :
+                case 'genome':
                     $info['genome'] = $this->genome->genomeCode;
                     break;
-                case 'commandId' :
+                case 'commandId':
                     $info['commandId'] = $this->genome->genomeCodePosition;
                     break;
-                case 'energy' :
+                case 'energy':
                     $info['energy'] = $this->energy;
                     break;
             }

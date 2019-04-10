@@ -4,90 +4,81 @@ namespace App\Services\BotPool\Command\Commands;
 
 use Illuminate\Support\Collection;
 
-class Move implements CommandInterface
+class Move extends AbstractCommand
 {
+    protected $necessaryEnergy = 1;
 
-    private $botInfoMap = [
-        "latitude",
-        "longitude",
-        "energy"
-    ];
-
-    private $botInfo;
-
-    private $changesOfBotInfo;
-
-    private function checkBotInfo(Collection $botInfo)
+    private function foo(int $dir): array
     {
-        $diff = array_diff($this->botInfoMap, $botInfo->keys()->all());
-        if (!empty($diff)) {
-            $message =
-                'Command '
-                . self::class
-                . ' don\'t have enough data in botInfo. '
-                . implode(',', $diff)
-                . ' are needed.';
-            throw new \Exception($message);// переделать с нормальными исключениями
-        }
-
-        $this->botInfo = $botInfo;
-    }
-
-    private function getDirection()
-    {
-        // получать с генома и проверить есть ли место.
-        // если нет - переполучить. также проверить не конец ли карты по высоте.
-        return rand(1, 8);
-    }
-
-    private function getPositionChanges(int $direction)
-    {
-        // если да, то движение должно быть круговым(умножаем х на ширину пула)
-        switch ($direction) {
+        switch ($dir) {
+            case 0:
+                return [
+                    'y' => -1,
+                    'x' => 0
+                ];
             case 1:
-                return [0, -1];
+                return [
+                    'y' => -1,
+                    'x' => 1
+                ];
             case 2:
-                return [1, -1];
+                return [
+                    'y' => 0,
+                    'x' => 1
+                ];
             case 3:
-                return [1, 0];
+                return [
+                    'y' => 1,
+                    'x' => 1
+                ];
             case 4:
-                return [1, 1];
+                return [
+                    'y' => 1,
+                    'x' => 0
+                ];
             case 5:
-                return [0, 1];
+                return [
+                    'y' => 1,
+                    'x' => -1
+                ];
             case 6:
-                return [-1, 1];
+                return [
+                    'y' => 0,
+                    'x' => -1
+                ];
             case 7:
-                return [-1, 0];
-            case 8:
-                return [-1, -1];
+                return [
+                    'y' => -1,
+                    'x' => -1
+                ];
             default:
-                throw new \Exception('Wrong direction '.$direction);
+                throw new \Exception('Wrong direction ' . $dir);
         }
     }
 
-    private function changePosition()
+    private function getCoordinateChange(array $genome, int $commandId): array
     {
-        $positionChanges = $this->getPositionChanges($this->getDirection());
+        $dir = $genome[$commandId] % 8;
+        for ($i = 0; $i < 8; $i++) {
+            $direction = $this->foo($dir);
+            $area = $this->poolInfo['area'];
 
-        dd($this->changesOfBotInfo);
-        $this->changesOfBotInfo->put('latitude', $positionChanges[0]);
-        $this->changesOfBotInfo->put('longitude', $positionChanges[1]);
-
-        //Обовить состояние пула (освободить предыдущий пиксель и занять новый)
-    }
-
-    private function changeBotInfo()
-    {
-        $this->changePosition();
-        // смена енергии
+            if($area[$direction['y']][$direction['x']] === 0) {
+                return $direction;
+            }
+            $dir = ($dir + 1) % 8;
+        }
+        $this->necessaryEnergy = 0;
+        return [0,0];
     }
 
     public function getInfoList(): array
     {
         $res = [
             'bot' => [
-                'genom' => true,
-                'commandId' => true
+                'genome' => true,
+                'commandId' => true,
+                'energy' => true
             ],
             'pool' => [
                 'area' => 1
@@ -95,5 +86,33 @@ class Move implements CommandInterface
         ];
 
         return $res;
+    }
+
+    public function run(): array
+    {
+        if (!$this->checkEnergyForRun()) {
+            throw new \Exception('need more energy');
+        }
+
+        $coordinateChange = $this->getCoordinateChange(
+            $this->botInfo['genome'],
+            $this->botInfo['commandId']
+        );
+
+        $energyChange = -$this->necessaryEnergy;
+
+        return [
+            'pool' => [
+                'coordinateChange' => $coordinateChange
+            ],
+            'bot' => [
+                'energyChange' => $energyChange
+            ]
+        ];
+    }
+
+    protected function checkEnergyForRun()
+    {
+        return $this->botInfo['energy'] - $this->necessaryEnergy >= 0;
     }
 }

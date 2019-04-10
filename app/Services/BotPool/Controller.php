@@ -31,14 +31,13 @@ class Controller
 
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
-        while ($i++ < 1000) {
+        while ($i++ < 7) {
             foreach ($this->botPopulation->getBots() as $bot) {
+                //проверяем состояние бота(смерть размножение)
                 $this->runBotStep($bot);
             }
         }
-
-        // получение снимка состояния(картинка пула с ботами)
-        return $this->botPopulation->runBotStep()->dump();
+        dd($this->pool);
     }
 
     private function runBotStep(Bot $bot)
@@ -53,15 +52,10 @@ class Controller
 
         $botInfo = $bot->getBotInfo($list['bot']);
         $poolInfo = $this->pool->getInfo($list['pool'], $bot->id);
-        dd(__LINE__, $botInfo, $poolInfo);
 
+        $result = $this->commandService->runCommand($botInfo, $poolInfo);
 
-        //run command
-        //set new ot info
-        //bot after processing
-            //die
-            //clone
-            //update population
-        //update pool
+        $bot->changeInfo($result['bot']);
+        $this->pool->changeInfo($result['pool'], $bot->id);
     }
 }

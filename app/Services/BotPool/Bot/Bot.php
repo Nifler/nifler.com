@@ -35,27 +35,13 @@ class Bot
     public $id;
 
     /**
-     * Проверка на мутацию и запуск мутации генома для бота
-     *
-     * @return void
+     * Bot constructor.
      */
-    private function setGenomeMutation(): void
+    public function __construct()
     {
-        if (mt_rand(1, 4) >= 4) {
-            $this->genome->mutate();
-        }
-    }
-
-    /**
-     * Проверяет статус бота и либо убивает его, либо нет.(будет рассширятся)
-     *
-     * @return void
-     */
-    private function checkBotStatus():void
-    {
-        if ($this->energy < 0) {
-            $this->killBot();
-        }
+        $this->genome = new Genome();
+        $this->energy = 10;
+        $this->id = 0;
     }
 
     /**
@@ -73,40 +59,37 @@ class Bot
     }
 
     /**
-     * Убиваем бота
+     * Отдаем данные, которые запросили при помощи $list
      *
+     * @param $list
+     *
+     * @return array
      */
-    private function killBot(): void
-    {
-        // kill this bot
-    }
-
     public function getBotInfo($list): array
     {
         $info = [];
         foreach ($list as $item => $option)
             switch ($item) {
-                case 'genom' :
-                    $info['genom'] = $this->genome->genomeCode;
+                case 'genome' :
+                    $info['genome'] = $this->genome->genomeCode;
                     break;
                 case 'commandId' :
                     $info['commandId'] = $this->genome->genomeCodePosition;
+                    break;
+                case 'energy' :
+                    $info['energy'] = $this->energy;
                     break;
             }
         return $info;
     }
 
-    /**
-     * Bot constructor.
-     *
-     * @param Genome $genome
-     * @param Pool $pool
-     *
-     */
-    public function __construct()
+    public function changeInfo(array $properties)
     {
-        $this->genome = new Genome();
-        $this->energy = 0;
-        $this->id = 0;
+        foreach ($properties as $property => $value) {
+            switch ($property) {
+                case 'energyChange':
+                    $this->energy += $value;
+            }
+        }
     }
 }

@@ -55,9 +55,9 @@ class Pool
         $this->poolPixels = $poolPoints;
     }
 
-    public function getPixelId($latitude, $longitude)
+    public function getPixelId($y, $x)
     {
-        return $latitude * $this->width + $longitude;
+        return $y * $this->width + $x;
     }
 
     public function getInfo($list, $botId): array
@@ -117,5 +117,44 @@ class Pool
         $this->itemPixelRelation[$itemId] = $pixelId;
 
         $this->poolPixels[$pixelId]->setItemType($type);
+    }
+
+    public function changeInfo($properties, $botId)
+    {
+        $pixel = $this->getPixelByItemId($botId);
+        foreach ($properties as $property => $value) {
+            switch ($property) {
+                case 'coordinateChange':
+                    $this->moveItem($pixel, $value, $botId);
+                    break;
+            }
+        }
+        return true;
+    }
+
+    private function moveItem($currentPixel, $direction, $botId)
+    {
+        if (empty(array_diff($direction, [0,0]))) {
+            return true;
+        }
+
+        $currentPixel->type = 0;
+        $this->save($currentPixel);
+
+        $newY = $currentPixel->y + $direction['y'];
+        $newX = ($currentPixel->x + $direction['x']) % $this->width;
+
+        $newPixelId = $this->getPixelId($newY, $newX);
+        $this->poolPixels[$newPixelId]->type = 1;
+
+        $this->itemPixelRelation[$botId] = $newPixelId;
+
+        return true;
+    }
+
+    private function save(PoolPixel $pixel)
+    {
+        $id = $this->getPixelId($pixel->y, $pixel->x);
+        $this->poolPixels[$id] = $pixel;
     }
 }

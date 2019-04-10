@@ -3,6 +3,7 @@
 namespace App\Services\BotPool\Command;
 
 
+use App\Services\BotPool\Command\Commands\CommandInterface;
 use App\Services\BotPool\Command\Commands\Move;
 use App\Services\BotPool\Command\Commands\Photosynthesis;
 
@@ -15,7 +16,10 @@ class CommandService
     ];
 
     private $commandId;
-    private $commandInfo;
+
+    /**
+     * @var CommandInterface
+     */
     private $command;
 
     /**
@@ -42,5 +46,13 @@ class CommandService
     public function getCommandList(): array
     {
         return self::COMMANDS;
+    }
+
+    public function runCommand(array $botInfo, array $poolInfo)
+    {
+        $this->command->setBotInfo($botInfo);
+        $this->command->setPoolInfo($poolInfo);
+
+        return $this->command->run();
     }
 }

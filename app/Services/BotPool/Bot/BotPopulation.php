@@ -36,6 +36,7 @@ class BotPopulation
     {
         $bot = new Bot();
         $botId = $this->addBot($bot);
+
         return $botId;
     }
 }

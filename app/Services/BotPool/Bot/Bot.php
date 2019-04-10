@@ -68,7 +68,7 @@ class Bot
     public function getBotInfo($list): array
     {
         $info = [];
-        foreach ($list as $item => $option)
+        foreach ($list as $item => $option) {
             switch ($item) {
                 case 'genome' :
                     $info['genome'] = $this->genome->genomeCode;
@@ -80,6 +80,8 @@ class Bot
                     $info['energy'] = $this->energy;
                     break;
             }
+        }
+
         return $info;
     }
 

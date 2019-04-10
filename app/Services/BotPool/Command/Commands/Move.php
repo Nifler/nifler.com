@@ -63,7 +63,7 @@ class Move extends AbstractCommand
             $direction = $this->foo($dir);
             $area = $this->poolInfo['area'];
 
-            if($area[$direction['y']][$direction['x']] === 0) {
+            if ($area[$direction['y']][$direction['x']] === 0) {
                 return $direction;
             }
             $dir = ($dir + 1) % 8;

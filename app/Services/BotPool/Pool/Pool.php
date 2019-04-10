@@ -65,7 +65,7 @@ class Pool
         $res = [];
         foreach ($list as $key => $value) {
             switch ($key) {
-                case 'area' :
+                case 'area':
                     $pixel = $this->getPixelByItemId($botId);
                     $res['area'] = $this->getBotArea($value, $pixel);
             }
@@ -86,7 +86,7 @@ class Pool
 
         for ($y = -$radius; $y <= $radius; $y++) {
             for ($x = -$radius; $x <= $radius; $x++) {
-                if(!isset($area[$y])) {
+                if (!isset($area[$y])) {
                     $area[$y] = [];
                 }
                 if ($pixel->y + $y < 0 || $pixel->y + $y > $this->height) {

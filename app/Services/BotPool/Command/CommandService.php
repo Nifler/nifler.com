@@ -2,7 +2,6 @@
 
 namespace App\Services\BotPool\Command;
 
-
 use App\Services\BotPool\Command\Commands\CommandInterface;
 use App\Services\BotPool\Command\Commands\Move;
 use App\Services\BotPool\Command\Commands\Photosynthesis;

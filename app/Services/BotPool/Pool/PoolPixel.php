@@ -19,6 +19,7 @@ class PoolPixel
     {
         $this->y = $y;
         $this->x = $x;
+        $this->type = 0;
     }
 
     public function setItemType(int $type)

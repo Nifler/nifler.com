@@ -122,9 +122,105 @@ class Pool
         ];
     }
 
+    private function getCoordinateDirection(int $dir): array
+    {
+        switch ($dir) {
+            case 0:
+                return [
+                    'y' => -1,
+                    'x' => 0
+                ];
+            case 1:
+                return [
+                    'y' => -1,
+                    'x' => 1
+                ];
+            case 2:
+                return [
+                    'y' => 0,
+                    'x' => 1
+                ];
+            case 3:
+                return [
+                    'y' => 1,
+                    'x' => 1
+                ];
+            case 4:
+                return [
+                    'y' => 1,
+                    'x' => 0
+                ];
+            case 5:
+                return [
+                    'y' => 1,
+                    'x' => -1
+                ];
+            case 6:
+                return [
+                    'y' => 0,
+                    'x' => -1
+                ];
+            case 7:
+                return [
+                    'y' => -1,
+                    'x' => -1
+                ];
+            default:
+                return [];
+        }
+    }
+
+    private function getCoordinateForChild(int $parent)
+    {
+        $direction = rand(0, 7);
+        $pixel = $this->getPixelByItemId($parent);
+
+        for ($i = 0; $i < 8; $i++) {
+            $dirYX = $this->getCoordinateDirection(($direction + $i) % 8);
+            $coordinates = [
+                'y' => $pixel->y + $dirYX['y'],
+                'x' => $pixel->x + $dirYX['x']
+            ];
+            if ($this->checkEmptyPixelByCoordinates($coordinates)) {
+                return $coordinates;
+            }
+        }
+
+
+        return[];
+    }
+
+    private function checkEmptyPixelByCoordinates(array $coordinates)
+    {
+        $pixelId = $this->getPixelId($coordinates['y'], $coordinates['x']);
+
+        return $this->poolPixels[$pixelId]->type === 0;
+    }
+
     private function addItem(array $info)
     {
-        //
+        if (isset($info['coordinates'])) {
+            if (!$this->checkEmptyPixelByCoordinates($info['coordinates'])) {
+                dd('звнято');
+            }
+            $coordinates = $info['coordinates'];
+        } elseif (isset($info['parent'])) {
+            $coordinates = $this->getCoordinateForChild($info['parent']);
+            if (empty($coordinates)) {
+                //удаляем парент
+                return;
+            }
+        } else {
+            dd('плохие данные для создания');
+            return;
+        }
+
+        $pixelId = $this->getPixelId($coordinates['y'], $coordinates['x']);
+        $this->itemPixelRelation[$info['child']] = $pixelId;
+        $this->poolPixels[$pixelId]->setItemType(1);
+        return [
+            'added' => $info['child']
+        ];
     }
 
     public function registerItem($item)
@@ -133,7 +229,11 @@ class Pool
         foreach ($item as $key => $value) {
             switch ($key) {
                 case 'addItem':
-                    $this->addItem($value);
+                    $res = $this->addItem($value);
+                    $result[] = [
+                        'action' => 'add',
+                        'id' => $res['added']
+                    ];
                     break;
                 case 'removeItem':
                     $this->removeItem($value);
@@ -145,10 +245,6 @@ class Pool
             }
         }
         return $result;
-//        $pixelId = $this->getPixelId($y, $x);
-//        $this->itemPixelRelation[$itemId] = $pixelId;
-//
-//        $this->poolPixels[$pixelId]->setItemType($type);
     }
 
     public function changeInfo($properties, $botId)

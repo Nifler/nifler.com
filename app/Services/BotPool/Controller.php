@@ -27,7 +27,11 @@ class Controller
         $item = [
             'addItem' => [
                 'parent' => false,
-                'child' => $id
+                'child' => $id,
+                'coordinates' => [
+                    'y' => 1,
+                    'x' => 1
+                ]
             ]
         ];
 
@@ -37,16 +41,16 @@ class Controller
 
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
-        while ($i++ < 7) {
+        while ($i++ < 13) {
             foreach ($this->botPopulation->getBots() as $bot) {
                 $res = $this->botPopulation->checkStatus($bot);
 
-                dd($res);
-//                $this->pool->
+                $this->pool->registerItem($res);
 
                 $this->runBotStep($bot);
             }
         }
+        dd($this->pool, $this->botPopulation);
     }
 
     private function runBotStep(Bot $bot)

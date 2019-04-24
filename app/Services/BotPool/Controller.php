@@ -41,13 +41,17 @@ class Controller
 
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
-        while ($i++ < 9) {
+
+        while ($i++ < 11) {
             foreach ($this->botPopulation->getBots() as $bot) {
-                $this->runBotStep($bot);
-
                 $res = $this->botPopulation->checkStatus($bot);
-
                 $this->pool->registerItem($res);
+
+                if (isset($res['removeItem'])) {
+                    continue;
+                }
+
+                $this->runBotStep($bot);
             }
         }
         dd($this->pool, $this->botPopulation);
@@ -68,7 +72,10 @@ class Controller
 
         $result = $this->commandService->runCommand($botInfo, $poolInfo);
 
+//        if ($bot->id) var_dump($result['bot'], $bot->getBotInfo(['energy' => true]));
+
         $bot->changeInfo($result['bot']);
+
         $this->pool->changeInfo($result['pool'], $bot->id);
     }
 }

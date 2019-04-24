@@ -41,13 +41,13 @@ class Controller
 
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
-        while ($i++ < 13) {
+        while ($i++ < 9) {
             foreach ($this->botPopulation->getBots() as $bot) {
+                $this->runBotStep($bot);
+
                 $res = $this->botPopulation->checkStatus($bot);
 
                 $this->pool->registerItem($res);
-
-                $this->runBotStep($bot);
             }
         }
         dd($this->pool, $this->botPopulation);

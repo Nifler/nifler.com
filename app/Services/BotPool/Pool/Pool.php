@@ -179,20 +179,27 @@ class Pool
             $dirYX = $this->getCoordinateDirection(($direction + $i) % 8);
             $coordinates = [
                 'y' => $pixel->y + $dirYX['y'],
-                'x' => $pixel->x + $dirYX['x']
+                'x' => ($pixel->x + $dirYX['x'] + $this->width) % $this->width
             ];
+
             if ($this->checkEmptyPixelByCoordinates($coordinates)) {
                 return $coordinates;
             }
         }
-
 
         return[];
     }
 
     private function checkEmptyPixelByCoordinates(array $coordinates)
     {
+        if ($coordinates['y'] < 0 || $coordinates['y'] > $this->width) {
+            return false;
+        }
         $pixelId = $this->getPixelId($coordinates['y'], $coordinates['x']);
+
+        if (!isset($this->poolPixels[$pixelId])) {
+            dd('не существующий пиксель', $pixelId, $coordinates);
+        }
 
         return $this->poolPixels[$pixelId]->type === 0;
     }

@@ -40,3 +40,4 @@ Route::resource('/cezar', 'CezarController');//->middleware(\App\Http\Middleware
 Route::resource('/botpool', 'BotPoolController');
 
 //my new commit line #2
+Route::get('/test/request', 'TestController@request');

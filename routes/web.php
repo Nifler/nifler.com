@@ -33,3 +33,5 @@ Route::get('/admin/{user}', 'AdminController@show');
  * Neural network
  */
 Route::resource('/cezar', 'CezarController');//->middleware(\App\Http\Middleware\Headers::class);
+
+Route::get('/test/request', 'TestController@request');

@@ -8,7 +8,6 @@ use mysql_xdevapi\Exception;
 
 class Pool
 {
-    private $foo;
     /**
      * @var array
      *
@@ -68,7 +67,6 @@ class Pool
         foreach ($list as $key => $value) {
             switch ($key) {
                 case 'area':
-                    $this->foo = __FUNCTION__;
                     $pixel = $this->getPixelByItemId($botId);
                     $res['area'] = $this->getBotArea($value, $pixel);
                     break;

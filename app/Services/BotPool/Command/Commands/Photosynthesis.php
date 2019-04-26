@@ -2,12 +2,31 @@
 
 namespace App\Services\BotPool\Command\Commands;
 
-class Photosynthesis implements CommandInterface
+class Photosynthesis extends AbstractCommand
 {
+    private function getEnergy()
+    {
+        return 1;
+    }
+
     public function getInfoList(): array
     {
-        dd('dontWork', self::class);
+        $res = [
+            'bot' => [
+            ],
+            'pool' => [
+                'y' => true
+            ]
+        ];
 
-        return [];
+        return $res;
+    }
+
+    public function run(): array
+    {
+        return [
+            'pool' => [],
+            'bot' => ['energyChange' => $this->getEnergy()]
+        ];
     }
 }

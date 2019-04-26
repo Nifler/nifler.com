@@ -42,7 +42,7 @@ class Controller
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
 
-        while ($i++ < 11) {
+        while ($i++ < 5000) {
             foreach ($this->botPopulation->getBots() as $bot) {
                 $res = $this->botPopulation->checkStatus($bot);
                 $this->pool->registerItem($res);
@@ -50,11 +50,10 @@ class Controller
                 if (isset($res['removeItem'])) {
                     continue;
                 }
-
                 $this->runBotStep($bot);
             }
         }
-        dd($this->pool, $this->botPopulation);
+        dd($this->pool);
     }
 
     private function runBotStep(Bot $bot)

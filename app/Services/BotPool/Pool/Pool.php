@@ -71,6 +71,10 @@ class Pool
                     $this->foo = __FUNCTION__;
                     $pixel = $this->getPixelByItemId($botId);
                     $res['area'] = $this->getBotArea($value, $pixel);
+                    break;
+                case 'y':
+                    $res['y'] = $this->getPixelByItemId($botId)->y;
+                    break;
             }
         }
         return $res;
@@ -79,7 +83,7 @@ class Pool
     private function getPixelByItemId($itemId): PoolPixel
     {
         if(!isset($this->itemPixelRelation[$itemId])) {
-            dd($this->foo);
+            throw new \Exception('For this item is no relation');
         }
         $pixelId = $this->itemPixelRelation[$itemId];
 

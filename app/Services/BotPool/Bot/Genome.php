@@ -49,8 +49,9 @@ class Genome
     {
         $genomeCode = [];
         for ($i = 0; $i < self::MAX_LENGTH; $i++) {
-            $genomeCode[$i] = 1;
+            $genomeCode[$i] = rand(1, 2);
         }
+
         return $genomeCode;
     }
 
@@ -86,10 +87,12 @@ class Genome
     {
         for($i=1; $i<=15; $i++){
             if( in_array($this->genomeCode[$this->genomeCodePosition], $idList) ) {
-                return $this->genomeCode[$this->genomeCodePosition];
+                $id = $this->genomeCode[$this->genomeCodePosition];
+                $this->moveGenomeCodePosition();
+                return $id;
             }
-            $this->moveGenomeCodePosition();
         }
+        $this->moveGenomeCodePosition();
         return self::DEFAULT_COMMAND_ID;
     }
 

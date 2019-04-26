@@ -36,7 +36,7 @@ class Bot
     public function __construct()
     {
         $this->genome = new Genome();
-        $this->energy = 1000;
+        $this->energy = 10;
         $this->id = 0;
     }
 

@@ -4,7 +4,7 @@ namespace App\Services\BotPool\Command\Commands;
 
 class Move extends AbstractCommand
 {
-    protected $necessaryEnergy = 1;
+    protected $necessaryEnergy = 0;
 
     private function getCoordinatesFromDirection(int $dir): array
     {

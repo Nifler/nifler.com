@@ -2,8 +2,6 @@
 
 namespace App\Services\BotPool\Bot;
 
-use phpDocumentor\Reflection\Types\Integer;
-
 /**
  * Class Genome
  *
@@ -84,7 +82,7 @@ class Genome
      *
      * @return int
      */
-    public function getCommandId(array $idList): integer
+    public function getCommandId(array $idList): int
     {
         for($i=1; $i<=15; $i++){
             if( in_array($this->genomeCode[$this->genomeCodePosition], $idList) ) {

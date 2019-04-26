@@ -2,13 +2,11 @@
 
 namespace App\Services\BotPool\Command\Commands;
 
-use Illuminate\Support\Collection;
-
 class Move extends AbstractCommand
 {
     protected $necessaryEnergy = 1;
 
-    private function foo(int $dir): array
+    private function getCoordinatesFromDirection(int $dir): array
     {
         switch ($dir) {
             case 0:
@@ -60,7 +58,7 @@ class Move extends AbstractCommand
     {
         $dir = $genome[$commandId] % 8;
         for ($i = 0; $i < 8; $i++) {
-            $direction = $this->foo($dir);
+            $direction = $this->getCoordinatesFromDirection($dir);
             $area = $this->poolInfo['area'];
 
             if ($area[$direction['y']][$direction['x']] === 0) {

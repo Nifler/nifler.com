@@ -2,6 +2,8 @@
 
 namespace App\Services\BotPool\Bot;
 
+use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Class Genome
  *
@@ -15,6 +17,11 @@ class Genome
      * Длина цепочки генома(количество ячеек для действий)
      */
     private const MAX_LENGTH = 64;
+
+    /**
+     * Default command
+     */
+    private const DEFAULT_COMMAND_ID = 2;
 
     /**
      * Начальная позиция в цепочке генома
@@ -52,9 +59,6 @@ class Genome
     /**
      * Genome constructor.
      *
-     * @param CommandService $commandService
-     * @param array $genomeCode
-     *
      * @return void
      */
     public function __construct()
@@ -64,8 +68,6 @@ class Genome
     }
 
     /**
-     * Мутация генома. Не работает для первой особи
-     *
      * @return void
      */
     public function mutate(): void
@@ -75,7 +77,14 @@ class Genome
         $this->genomeCode[$gen] = $value;
     }
 
-    public function getCommandId(array $idList)
+    /**
+     * Get existed command id
+     *
+     * @param array $idList
+     *
+     * @return int
+     */
+    public function getCommandId(array $idList): integer
     {
         for($i=1; $i<=15; $i++){
             if( in_array($this->genomeCode[$this->genomeCodePosition], $idList) ) {
@@ -83,9 +92,12 @@ class Genome
             }
             $this->moveGenomeCodePosition();
         }
-        return 2;//default command
+        return self::DEFAULT_COMMAND_ID;
     }
 
+    /**
+     * Moving genome code position along genome
+     */
     private function moveGenomeCodePosition()
     {
         $res = $this->genomeCodePosition + $this->genomeCode[$this->genomeCodePosition];

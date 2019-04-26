@@ -4,6 +4,7 @@ namespace App\Services\BotPool\Pool;
 
 use App\Services\BotPool\Bot\BotPopulation;
 use Illuminate\Support\Collection;
+use mysql_xdevapi\Exception;
 
 class Pool
 {
@@ -203,28 +204,35 @@ class Pool
         $pixelId = $this->getPixelId($coordinates['y'], $coordinates['x']);
 
         if (!isset($this->poolPixels[$pixelId])) {
-            dd('не существующий пиксель', $pixelId, $coordinates);
+            throw new \Exception("Pixel $pixelId is not exist.");
         }
 
         return $this->poolPixels[$pixelId]->type === 0;
     }
 
+    /**
+     * @param array $info
+     *
+     * @return array
+     *
+     * @throws \Exception
+     */
     private function addItem(array $info)
     {
         if (isset($info['coordinates'])) {
             if (!$this->checkEmptyPixelByCoordinates($info['coordinates'])) {
-                dd('звнято');
+                throw new \Exception('Pixel is not free');
             }
             $coordinates = $info['coordinates'];
         } elseif (isset($info['parent'])) {
             $coordinates = $this->getCoordinateForChild($info['parent']);
             if (empty($coordinates)) {
-                //удаляем парент
-                return;
+                return[
+                    'remove' => $info['parent']
+                ];
             }
         } else {
-            dd('плохие данные для создания');
-            return;
+            throw new \Exception('Bad data for creating');
         }
 
         $pixelId = $this->getPixelId($coordinates['y'], $coordinates['x']);

@@ -72,8 +72,6 @@ class Controller
 
         $result = $this->commandService->runCommand($botInfo, $poolInfo);
 
-//        if ($bot->id) var_dump($result['bot'], $bot->getBotInfo(['energy' => true]));
-
         $bot->changeInfo($result['bot']);
 
         $this->pool->changeInfo($result['pool'], $bot->id);

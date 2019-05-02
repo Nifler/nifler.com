@@ -32,7 +32,7 @@ class BotPopulation
         return $this->botPopulation;
     }
 
-    public function makeBot(): int
+    public function makeBot(array $params = []): int
     {
         $bot = new Bot();
         $botId = $this->addBot($bot);
@@ -55,7 +55,7 @@ class BotPopulation
             ];
         }
 
-        if ($info['energy'] >=1000) {
+        if ($info['energy'] >=20) {
             $ids = $this->reproduction($bot);
             return [
                 'addItem' => $ids
@@ -87,10 +87,12 @@ class BotPopulation
         ]);
 
         $childBot = clone $bot;
-
         $this->botPopulation[] = $childBot;
 
         $childBot->id = array_key_last($this->botPopulation);
+        $childBot->changeInfo([
+            'energy' => 6
+        ]);
 
         return [
             'parent' => $bot->id,

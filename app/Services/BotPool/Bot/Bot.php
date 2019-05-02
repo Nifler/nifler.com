@@ -45,6 +45,22 @@ class Bot
         $this->genome->mutate();
     }
 
+    public function getProperties()
+    {
+        return [
+            'id' => $this->id,
+            'energy' => $this->energy
+        ];
+    }
+
+    public function getGenome()
+    {
+        return [
+            'position' => $this->genome->genomeCodePosition,
+            'code' => $this->genome->genomeCode
+        ];
+    }
+
     /**
      * Получаем класс комманды бота на этом ходу согласно геному
      *

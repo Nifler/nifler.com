@@ -282,6 +282,43 @@ class Pool
         return true;
     }
 
+    private function getPoolPixelsArr(): array
+    {
+        $arr=[];
+        foreach ($this->poolPixels as $key => $value) {
+            $arr[$key]['type'] = $value->type;
+        }
+
+        return $arr;
+    }
+
+    private function getBotPopulationArr()
+    {
+        $arr = [];
+        foreach ($this->botPopulation->getBots() as $key => $bot)
+        {
+            $arr[$key]['properties'] = $bot->getProperties();
+            $arr[$key]['genome'] = $bot->getGenome();
+        }
+
+        return $arr;
+    }
+
+    public function getArrScrinshot()
+    {
+        $this->getPoolPixelsArr();
+
+        $this->getBotPopulationArr();
+
+        $this->itemPixelRelation;
+
+        return [
+            'pixels' => $this->getPoolPixelsArr(),
+            'population' => $this->getBotPopulationArr(),
+            'itemPixelRelation' => $this->itemPixelRelation
+        ];
+    }
+
     private function moveItem($currentPixel, $direction, $botId)
     {
         if (empty(array_diff($direction, [0,0]))) {

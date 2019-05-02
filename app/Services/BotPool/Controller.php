@@ -37,10 +37,9 @@ class Controller
 
         $this->pool->registerItem($item);
 
-
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
-        while ($i++ < 50) {
+        while ($i++ < 25) {
             foreach ($this->botPopulation->getBots() as $bot) {
                 $res = $this->botPopulation->checkStatus($bot);
                 $this->pool->registerItem($res);
@@ -51,10 +50,11 @@ class Controller
                 $this->runBotStep($bot);
             }
         }
+        $arr = $this->pool->getArrScrinshot();
 
-//        \Redis::set('Pool', $this->pool);
-
-        dd($this->pool);
+        \Redis::set('PoolSnapshot', json_encode($arr));
+dd($arr);
+        return $arr;
     }
 
     private function runBotStep(Bot $bot)
@@ -68,6 +68,7 @@ class Controller
         $list = $this->commandService->getReuiredInformationList();
 
         $botInfo = $bot->getBotInfo($list['bot']);
+
         $poolInfo = $this->pool->getInfo($list['pool'], $bot->id);
 
         $result = $this->commandService->runCommand($botInfo, $poolInfo);

@@ -344,4 +344,12 @@ class Pool
         $id = $this->getPixelId($pixel->y, $pixel->x);
         $this->poolPixels[$id] = $pixel;
     }
+
+    public function getDimensions()
+    {
+        return [
+            'width' => $this->width,
+            'height' => $this->height
+        ];
+    }
 }

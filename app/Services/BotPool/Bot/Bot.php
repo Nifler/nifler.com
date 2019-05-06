@@ -42,7 +42,7 @@ class Bot
 
     public function __clone()
     {
-        $this->genome->mutate();
+        $this->genome = clone $this->genome;
     }
 
     public function getProperties()

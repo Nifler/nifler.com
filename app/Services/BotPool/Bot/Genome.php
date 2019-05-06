@@ -66,10 +66,16 @@ class Genome
         $this->genomeCode = $this->createStartGenomeCode();
     }
 
+    public function __clone()
+    {
+        $this->genomeCodePosition = self::DEFAULT_GENOME_CODE_POSITION;
+        $this->mutate();
+    }
+
     /**
      * @return void
      */
-    public function mutate(): void
+    private function mutate(): void
     {
         $gen = mt_rand(0, 63);
         $value = mt_rand(0, 63);

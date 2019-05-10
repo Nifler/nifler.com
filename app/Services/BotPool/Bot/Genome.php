@@ -49,7 +49,7 @@ class Genome
     {
         $genomeCode = [];
         for ($i = 0; $i < self::MAX_LENGTH; $i++) {
-            $genomeCode[$i] = rand(1, 2);
+            $genomeCode[$i] = 1;
         }
 
         return $genomeCode;

@@ -22,6 +22,11 @@ class Controller
 
     public function run()
     {
+
+        $data = \Redis::get('PoolSnapshot');
+
+        dd(1, $data);
+
         $id = $this->botPopulation->makeBot();
 
         $item = [
@@ -36,10 +41,10 @@ class Controller
         ];
 
         $this->pool->registerItem($item);
-
+dd($this->pool);
         $i = 0;                 // завершение жизни нужно будет переделать, пока что лимит в количество ходов будет
 
-        while ($i++ < 75) {
+        while ($i++ < 50) {
             foreach ($this->botPopulation->getBots() as $bot) {
                 $res = $this->botPopulation->checkStatus($bot);
                 $this->pool->registerItem($res);
@@ -53,7 +58,7 @@ class Controller
         $arr = $this->pool->getArrScrinshot();
 
         $res = array_merge($arr, ['dimensions' => $this->pool->getDimensions()]);
-
+dd($res);
         \Redis::set('PoolSnapshot', json_encode($res));
 
         return $res;

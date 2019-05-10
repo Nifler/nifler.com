@@ -21,8 +21,12 @@ class BotPoolController extends Controller
     public function run()
     {
         $data = $this->controller->run();
-
-        $res['dimensions'] = $data['dimensions'];
+if(isset($_GET['t'])) {
+    dd($data);
+}
+        $res = [
+            'dimensions' => $data['dimensions']
+        ];
 
         $pixels = [];
         foreach ($data['itemPixelRelation'] as $key => $pixel) {

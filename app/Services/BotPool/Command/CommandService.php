@@ -10,8 +10,8 @@ class CommandService
 {
     // соответствие ид генома к комманде. это безобразие переделать через конфиг
     const COMMANDS = [
-        1 => Move::class,
-        2 => Photosynthesis::class
+        1 => Photosynthesis::class,
+        2 => Move::class
     ];
 
     private $commandId;

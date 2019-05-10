@@ -67,23 +67,3 @@
         </script>
     </body>
 </html>
-
-
-{{--<canvas id="pool" width="200px" height="200px"></canvas>--}}
-
-{{--<script>--}}
-{{--    var canvas = document.getElementById('pool');--}}
-{{--    var ctx = canvas.getContext('2d');--}}
-{{--    ctx.fillStyle = 'rgb(225, 225, 225, 225)';--}}
-{{--    ctx.fillRect(0, 0, 150, 150);--}}
-
-{{--    //ctx.fillStyle = 'rgb(225)';--}}
-
-{{--    // ctx.beginPath();--}}
-{{--    // ctx.moveTo(0, 0);--}}
-{{--    // ctx.lineTo(0, 150);--}}
-{{--    // ctx.lineTo(150, 150);--}}
-{{--    // ctx.lineTo(150, 0);--}}
-{{--    // ctx.lineTo(0, 0);--}}
-{{--    // ctx.stroke();--}}
-{{--</script>--}}

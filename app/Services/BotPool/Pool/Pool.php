@@ -254,7 +254,7 @@ class Pool
                     $res = $this->addItem($value);
                     $result[] = [
                         'action' => 'add',
-                        'id' => $res['added']
+                        'id' => $res['added'] ?? null
                     ];
                     break;
                 case 'removeItem':

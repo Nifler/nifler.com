@@ -6,7 +6,7 @@ class Photosynthesis extends AbstractCommand
 {
     private function getEnergy()
     {
-        return 1;
+        return 2;
     }
 
     public function getInfoList(): array

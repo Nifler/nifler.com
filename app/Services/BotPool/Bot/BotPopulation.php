@@ -55,7 +55,7 @@ class BotPopulation
             ];
         }
 
-        if ($info['energy'] >=20) {
+        if ($info['energy'] >= 50) {
             $ids = $this->reproduction($bot);
             return [
                 'addItem' => $ids

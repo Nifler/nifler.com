@@ -20,6 +20,11 @@ class Controller
         $this->commandService = $commandService;
     }
 
+    public function renew()
+    {
+        \Redis::set('PoolSnapshot', null);
+    }
+
     public function run()
     {
         $data = \Redis::get('PoolSnapshot');

@@ -6,8 +6,10 @@
         <canvas id="pool"></canvas>
         <br/>
         <button id="run">RUN</button>
+        <button id="kill">KILL</button>
         <script>
             var url = "https://nifler.com/botpool/run";
+            var urlKill = "https://nifler.com/botpool/renew";
 
             function run()
             {
@@ -21,7 +23,7 @@
             }
 
             function buildPool(dimensions, pixels) {
-                var pixelWidth = 4;
+                var pixelWidth = 20;
                 var width = pixelWidth * dimensions.width + (dimensions.width + 1) * 1;
                 var height = pixelWidth * dimensions.height + (dimensions.height + 1) * 1;
 
@@ -62,6 +64,11 @@
 
             jQuery("#run").click(function () {
                 run();
+            })
+            jQuery("#kill").click(function () {
+                jQuery.ajax({
+                    url: urlKill
+                });
             })
 
         </script>

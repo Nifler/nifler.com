@@ -21,9 +21,9 @@ class BotPoolController extends Controller
     public function run()
     {
         $data = $this->controller->run();
-if(isset($_GET['t'])) {
-    dd($data);
-}
+        if(isset($_GET['t'])) {
+            dd($data);
+        }
         $res = [
             'dimensions' => $data['dimensions']
         ];
@@ -35,5 +35,10 @@ if(isset($_GET['t'])) {
         $res['pixels'] = $pixels;
 
         return json_encode($res);
+    }
+
+    public function renew()
+    {
+        $this->controller->renew();
     }
 }

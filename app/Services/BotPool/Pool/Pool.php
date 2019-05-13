@@ -45,6 +45,24 @@ class Pool
         $this->fillPixels();
     }
 
+    public function setPixels(array $pixels)
+    {
+        foreach ($pixels as $id => $pixelInfo) {
+            $x = $this->getCoordinatesById($id)['x'];
+            $y = $this->getCoordinatesById($id)['y'];
+
+            $pixel = new PoolPixel($y, $x);      // перевроверить ширину и высоту. ато хуйня
+            $pixel->type = $pixelInfo['type'];
+
+            $this->poolPixels[$id] = $pixel;
+        }
+    }
+
+    public function setRelations(array $relations)
+    {
+        $this->itemPixelRelation = $relations;
+    }
+
     private function fillPixels()
     {
         $poolPoints = [];
@@ -59,6 +77,17 @@ class Pool
     public function getPixelId($y, $x)
     {
         return $y * $this->width + $x;
+    }
+
+    private function getCoordinatesById($id)
+    {
+        $x = $id % $this->width + 1;
+        $y = intdiv($id, $this->height);
+
+        return [
+            'x' => $x,
+            'y' => $y
+        ];
     }
 
     public function getInfo($list, $botId): array

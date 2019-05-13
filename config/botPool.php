@@ -2,7 +2,7 @@
 //перенести внутрь сервиса
 return [
     'pool' => [
-        'width' => 45,
-        'height' => 45
+        'width' => 5,
+        'height' => 5
     ]
 ];

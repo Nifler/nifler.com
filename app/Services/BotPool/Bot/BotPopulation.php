@@ -27,6 +27,22 @@ class BotPopulation
         return array_key_last($this->botPopulation);
     }
 
+    public function createBots(array $bots): array
+    {
+        $res = [];
+        foreach ($bots as $botInfo) {
+            $bot = new Bot();
+
+            $bot->setProperties($botInfo['properties']);
+            $bot->setGenome($botInfo['genome']);
+            $this->botPopulation[$bot->id] = $bot;
+
+            $res[] = $bot->id;
+        }
+
+        return $res;
+    }
+
     public function getBots(): array
     {
         return $this->botPopulation;

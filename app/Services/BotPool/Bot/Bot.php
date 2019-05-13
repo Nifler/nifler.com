@@ -40,6 +40,18 @@ class Bot
         $this->id = 0;
     }
 
+    public function setProperties($properties)
+    {
+        $this->id = $properties['id'];
+        $this->energy = $properties['energy'];
+    }
+
+    public function setGenome($genome)
+    {
+        $this->genome->genomeCode = $genome['code'];
+        $this->genome->genomeCodePosition = $genome['position'];
+    }
+
     public function __clone()
     {
         $this->genome = clone $this->genome;

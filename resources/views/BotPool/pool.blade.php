@@ -2,11 +2,35 @@
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     </head>
+    <style>
+        #wrapper{
+            width: 1200px;
+            background-color: #eeeeee;
+        }
+        .left{
+            float: left;
+        }
+        .right{
+            float:right;
+        }
+        .clr{
+            clear: both;
+        }
+    </style>
     <body>
-        <canvas id="pool"></canvas>
-        <br/>
-        <button id="run">RUN</button>
-        <button id="kill">KILL</button>
+        <div id="wrapper">
+            <div class="left">
+                <canvas id="pool"></canvas>
+                <br/>
+                <button id="run">RUN</button>
+                <button id="kill">KILL</button>
+            </div>
+            <div class="left">
+                <div id="botinfo"></div>
+            </div>
+            <div class="clr"></div>
+        </div>
+
         <script>
             var url = "https://nifler.com/botpool/run";
             var urlKill = "https://nifler.com/botpool/renew";
@@ -18,8 +42,17 @@
                 })
                     .done(function( data ) {
                         var res = JSON.parse(data);
-                        buildPool(res.dimensions, res.pixels)
+                        buildPool(res.dimensions, res.pixels);
+                        setBotInfo( res.population );
                     });
+            }
+
+            function setBotInfo(population) {
+                $("#botinfo").html("");
+                for (var bot of population) {
+                    var msg = "<p>" + bot.properties.id + ": energy = " + bot.properties.energy + "</p>";
+                    $( "#botinfo" ).append( msg );
+                }
             }
 
             function buildPool(dimensions, pixels) {
@@ -42,6 +75,7 @@
                     ctx.lineTo(i * pixelWidth + i, height);
                     ctx.stroke();
                 }
+
                 for (var i = 0; i <= dimensions.height; i++) {
                     ctx.beginPath();
                     ctx.moveTo(0, i * pixelWidth + i);
@@ -50,6 +84,7 @@
                 }
 
                 for (var pixel in pixels) {
+                    // console.log(pixels, pixel, pixels[pixel]);
                     x = pixel % dimensions.width + 1;
                     y = Math.trunc(pixel  / dimensions.width) + 1;
 
@@ -64,7 +99,7 @@
 
             jQuery("#run").click(function () {
                 run();
-            })
+            });
             jQuery("#kill").click(function () {
                 jQuery.ajax({
                     url: urlKill

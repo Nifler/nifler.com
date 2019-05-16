@@ -30,8 +30,14 @@ class BotPoolController extends Controller
 
         $pixels = [];
         foreach ($data['itemPixelRelation'] as $key => $pixel) {
-            $pixels[$pixel] = 1;
+            $pixels[$pixel] = $key;
         }
+        $res['population'] = $data['population'];
+
+        foreach ($res['population'] as &$bot) {
+            unset($bot['genome']);
+        }
+
         $res['pixels'] = $pixels;
 
         return json_encode($res);

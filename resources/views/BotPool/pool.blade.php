@@ -94,6 +94,15 @@
                     ctx.beginPath();
                     ctx.arc(x, y, pixelWidth / 2, 0, 2 * Math.PI);
                     ctx.stroke();
+
+                    var font = Math.trunc(pixelWidth  / 3);
+                    ctx.fillStyle = "#000000";
+                    ctx.font = font + "px Georgia";
+                    ctx.fillText(
+                        pixels[pixel],
+                        x - font/2,
+                        y + font/2
+                    );
                 }
             }
 
